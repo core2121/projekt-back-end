@@ -15,4 +15,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OA.Repository\OA.Repository.csproj" />
+    <ProjectReference Include="..\OA.Service\OA.Service.csproj" />
+  </ItemGroup>
+
 </Project>
