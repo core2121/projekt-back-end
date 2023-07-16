@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace OA.Data
 {
-    public class UserRole : BaseEntity
+    public class UserLoginHistory : BaseEntity
     {
-        public string RoleName { get; set; }
+        public DateTime LoginDate { get; set; }
 
-        public virtual ICollection<User> User { get; set; }
+        public virtual User User { get; set; }
     }
 }

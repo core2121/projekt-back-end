@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace OA.Data
 {
-    public class UserRole : BaseEntity
+    public class UserPrivilages : BaseEntity
     {
-        public string RoleName { get; set; }
+        public int Privilages { get; set; }
 
         public virtual ICollection<User> User { get; set; }
     }

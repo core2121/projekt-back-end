@@ -1,0 +1,20 @@
+﻿@page "/fetchuserlist"
+
+<PageTitle>UserList</PageTitle>
+@using Project.BlazorApp.Data;
+@using OA.Data;
+@inject HelperService Helper
+
+<h1>Registered users list</h1>
+
+<p>This component fetches registered users list</p>
+
+
+@code {
+    private IEnumerable<User>? userslist;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userslist = await Helper.GetUsersAsync();
+    }
+}

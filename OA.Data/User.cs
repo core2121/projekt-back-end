@@ -13,5 +13,9 @@ namespace OA.Data
         public string Surname{ get; set; }
 
         public virtual UserRole UserRole { get; set; }
+
+        public virtual ICollection<UserLoginHistory> UserLoginHistory { get; set; }
+
+        public virtual UserPrivilages UserPrivilages { get; set; }
     }
 }
