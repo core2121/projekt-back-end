@@ -24,6 +24,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<HelperService>();
 
 var app = builder.Build();
 
