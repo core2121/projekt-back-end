@@ -13,8 +13,14 @@ namespace OA.Service
 
         User GetById(int id);
 
-        void InsertUser(User user);
+        string InsertUser(User user);
 
-        void UpdateUser(User user);
+        string UpdateUser(User user);
+
+        Task<User[]> GetUsersAsync();
+
+        string LoginUser(string login, string password);
+
+        Task<string> Logout();
     }
 }

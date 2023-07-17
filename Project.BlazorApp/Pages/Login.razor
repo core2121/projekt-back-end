@@ -1,0 +1,67 @@
+﻿@page "/login"
+@using Project.BlazorApp.Model;
+@using Project.BlazorApp.Data;
+@using OA.Service;
+@inject NavigationManager NavManager
+@inject IUserService us;
+@inject IUserLoginHistoryService ulhs;
+
+<PageTitle>Login</PageTitle>
+
+<h1>Login</h1>
+
+@if (errorMessage != string.Empty)
+{
+		<br />
+		<h2 style="color:red">@errorMessage</h2>
+		<br />
+}
+
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<p>
+		<label>
+			Login<br />
+			<InputText @bind-Value="model.Login" />
+		</label>
+	</p>
+	<p>
+		<label>
+			Password<br />
+			<InputText @bind-Value="model.Password" />
+		</label>
+	</p>
+	<button type="submit">Sign in</button>
+
+</EditForm>
+
+@code {
+	private bool isUserLogged = false;
+	private string errorMessage = string.Empty;
+	private UserModel model = new();
+
+	private void HandleValidSubmit()
+	{
+		errorMessage = us.LoginUser(model.Login, model.Password);
+
+		isUserLogged = errorMessage == string.Empty;
+
+		if (isUserLogged)
+		{
+			var u = us.GetById(LoggedUserService.UserId);
+
+			var h = ulhs.InsertHistory(new OA.Data.UserLoginHistory()
+			{
+				LoginDate = DateTime.Now,
+				User = u
+			});
+
+			NavManager.NavigateTo("/");
+		}
+
+		StateHasChanged();
+	}
+}
+
