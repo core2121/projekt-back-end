@@ -13,6 +13,8 @@ namespace OA.Service
 
         User GetById(int id);
 
+        Task<User> GetByIdAsync(int id);
+
         string InsertUser(User user);
 
         string UpdateUser(User user);

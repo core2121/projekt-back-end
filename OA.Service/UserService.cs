@@ -27,6 +27,11 @@ namespace OA.Service
             return repository.GetById(id);
         }
 
+        public Task<User> GetByIdAsync(int id)
+        {
+            return Task.FromResult(repository.GetById(id));
+        }
+
         public string InsertUser(User user)
         {
             try
