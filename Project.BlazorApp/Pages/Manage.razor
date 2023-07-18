@@ -1,0 +1,126 @@
+﻿@page "/manage"
+
+<PageTitle>Manage</PageTitle>
+@using OA.Data;
+@using OA.Service;
+@using Project.BlazorApp.Model;
+
+@inject IUserService us
+@inject IUserRoleService urs
+@inject IUserPrivilagesService ups
+
+<h3>Manage user details</h3>
+
+<p>This component manages user's details</p>
+
+@if (errorMessage != string.Empty)
+{
+    <br />
+    <h2 style="color:red">@errorMessage</h2>
+    <br />
+}
+
+@if (isUserModified)
+{
+    <br />
+    <h2 style="color:green">User @model.Name @model.Surname was modified</h2>
+}
+
+@if (model == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <p>
+            <label>
+                Name<br />
+                <InputText @bind-Value="model.Name" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Surname<br />
+                <InputText @bind-Value="model.Surname" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Login<br />
+                <InputText @bind-Value="model.Login" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Password<br />
+                <InputText @bind-Value="model.Password" />
+            </label>
+        </p>
+        <p>
+            <label>
+                Role<br />
+                <InputSelect @bind-Value="model.UserRole">
+                    <option value="1">Admin</option>
+                    <option value="2">User</option>
+                </InputSelect>
+            </label>
+        </p>
+
+        <p>
+            <label>
+                Privilages<br />
+                <InputSelect @bind-Value="model.UserPrivilages">
+                    <option value="1">View all</option>
+                    <option value="2">Cant view history</option>
+                </InputSelect>
+            </label>
+        </p>
+
+        <button type="submit">Save change</button>
+
+    </EditForm>
+}
+@code {
+    private UserModel model;
+    private User user;
+    private string errorMessage = string.Empty;
+    private bool isUserModified = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await us.GetByIdAsync(LoggedUserService.UserId);
+
+        model = new UserModel(user);
+    }
+
+    private void HandleValidSubmit()
+    {
+        if (user.UserRoleId != model.UserRole)
+            user.UserRole = urs.GetById(model.UserRole);
+
+        if (user.UserPrivilagesId != model.UserPrivilages)
+            user.UserPrivilages = ups.GetById(model.UserPrivilages);
+
+        if (user.Name != model.Name)
+            user.Name = model.Name;
+
+        if (user.Surname != model.Surname)
+            user.Surname = model.Surname;
+
+        if (user.Login != model.Login)
+            user.Login = model.Login;
+
+        if (user.Password != model.Password)
+            user.Password = model.Password;
+
+        errorMessage = us.UpdateUser(user);
+
+        isUserModified = errorMessage == string.Empty;
+
+        StateHasChanged();
+    }
+}

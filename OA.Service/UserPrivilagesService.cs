@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace OA.Service
 {
-    public class UserRoleService : IUserRoleService
+    public class UserPrivilagesService : IUserPrivilagesService
     {
-        private IRepository<UserRole> repository;
+        private IRepository<UserPrivilages> repository;
 
-        public UserRoleService(IRepository<UserRole> repository)
+        public UserPrivilagesService(IRepository<UserPrivilages> repository)
         {
             this.repository = repository;
         }
 
-        public IEnumerable<UserRole> GetAll()
+        public IEnumerable<UserPrivilages> GetAll()
         {
             return repository.GetAll();
         }
 
-        public UserRole GetById(int id)
+        public UserPrivilages GetById(int id)
         {
             return repository.GetById(id);
         }

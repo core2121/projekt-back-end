@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace OA.Service
 {
-    public interface IUserRoleService
+    public interface IUserPrivilagesService
     {
-        public IEnumerable<UserRole> GetAll();
+        public IEnumerable<UserPrivilages> GetAll();
 
-        public UserRole GetById(int id);
+        public UserPrivilages GetById(int id);
+
     }
 }

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace OA.Service
 {
-    public interface IUserRoleService
+    public interface IUserLoginHistoryService
     {
-        public IEnumerable<UserRole> GetAll();
+        Task<IEnumerable<UserLoginHistory>> GetById(int id);
 
-        public UserRole GetById(int id);
+        string InsertHistory(UserLoginHistory loginHistory);
     }
 }

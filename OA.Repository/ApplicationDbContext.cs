@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OA.Repository
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -17,5 +17,12 @@ namespace OA.Repository
         }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<UserRole> UserRoles { get; set; }
+
+        public DbSet<UserLoginHistory> UserLoginHistory { get; set; }
+
+        public DbSet<UserPrivilages> UserPrivilages { get; set; }
+
     }
 }

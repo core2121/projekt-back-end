@@ -20,11 +20,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<OA.Repository.ApplicationDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+//builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<HelperService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
+builder.Services.AddScoped<IUserPrivilagesService, UserPrivilagesService>();
+builder.Services.AddScoped<IUserLoginHistoryService, UserLoginHistoryService>();
 
 var app = builder.Build();
 

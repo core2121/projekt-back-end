@@ -1,0 +1,109 @@
+﻿@page "/registration"
+
+@using Project.BlazorApp.Model;
+@using Project.BlazorApp.Data
+@using OA.Service;
+
+@inject IUserService us
+@inject IUserRoleService urs
+@inject IUserPrivilagesService ups
+
+<PageTitle>User registration</PageTitle>
+
+<h1>Registration</h1>
+
+@if(errorMessage != string.Empty)
+{
+    <br />
+    <h2 style="color:red">@errorMessage</h2>
+    <br />
+}
+@if (!isUserRegistered)
+{
+  <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <p>
+        <label>
+            Name<br />
+            <InputText @bind-Value="model.Name" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Surname<br />
+            <InputText @bind-Value="model.Surname" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Login<br />
+            <InputText @bind-Value="model.Login" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Password<br />
+            <InputText @bind-Value="model.Password" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Role<br />
+            <InputSelect @bind-Value="model.UserRole">
+                <option value="1">Admin</option>
+                <option value="2">User</option>
+            </InputSelect>
+        </label>
+    </p>
+
+    <p>
+        <label>
+            Privilages<br />
+            <InputSelect @bind-Value="model.UserPrivilages">
+                <option value="1">View all</option>
+                <option value="2">Cant view history</option>
+            </InputSelect>
+        </label>
+    </p>
+
+    <button type="submit">Sign up</button>
+
+    </EditForm>
+}
+else
+{
+    <br />
+    <h2 style="color:green">User @model.Name @model.Surname is registered</h2>
+}
+
+
+@code {
+    private bool isUserRegistered = false;
+    private string errorMessage = string.Empty;
+    private UserModel model = new();
+
+    private void HandleValidSubmit()
+    {
+        var ur = urs.GetById(model.UserRole);
+        var up = ups.GetById(model.UserPrivilages);
+
+        var u = new OA.Data.User()
+        {
+            Name = model.Name,
+            Surname = model.Surname,
+            Login = model.Login,
+            Password = model.Password
+        };
+
+        u.UserRole = ur;
+        u.UserPrivilages = up;
+
+        errorMessage = us.InsertUser(u);
+
+        isUserRegistered = errorMessage == string.Empty;
+
+        StateHasChanged();
+    }
+}

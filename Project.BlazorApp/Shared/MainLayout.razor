@@ -1,16 +1,59 @@
-﻿@inherits LayoutComponentBase
+﻿@using OA.Service;
+@inherits LayoutComponentBase
 
 <PageTitle>Project.BlazorApp</PageTitle>
 
 <div class="page">
     <div class="sidebar">
-        <NavMenu />
+		<div class="top-row ps-3 navbar navbar-dark" style="background-color:lightblue">
+			<div class="container-fluid">
+                <a href=""><b>Sample Blazor App</b></a>
+			</div>
+		</div>
+
+		<div class="">
+			<nav class="flex-column">
+				<div class="nav-item px-3">
+					<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+						<span class="oi oi-home" aria-hidden="true"></span> Home
+					</NavLink>
+				</div>
+
+				@if (LoggedUserService.IsUserLogged)
+				{
+					<div class="nav-item px-3">
+						<NavLink class="nav-link" href="fetchuserlist">
+							<span class="oi oi-list-rich" aria-hidden="true"></span> Show users list
+						</NavLink>
+					</div>
+				}
+
+
+				@if (LoggedUserService.IsUserLogged && LoggedUserService.UserPrivilages == 1)
+				{
+					<div class="nav-item px-3">
+						<NavLink class="nav-link" href="fetchHistorylist">
+							<span class="oi oi-list-rich" aria-hidden="true"></span> Show logging history
+						</NavLink>
+					</div>
+				}
+
+			</nav>
+		</div>
     </div>
 
     <main>
         <div class="top-row px-4 auth">
-            <LoginDisplay />
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">@*About*@</a>
+            @if (LoggedUserService.IsUserLogged)
+            {
+                <a href="Manage">Czesc, @LoggedUserService.UserName!</a>
+                <a href="Logout">Log out</a>
+            }
+            else
+            {
+                <a href="Registration">Register</a>
+                <a href="Login">Login</a>
+            }
         </div>
 
         <article class="content px-4">
@@ -18,3 +61,7 @@
         </article>
     </main>
 </div>
+
+@code {
+
+}

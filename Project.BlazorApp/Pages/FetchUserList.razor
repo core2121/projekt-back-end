@@ -3,18 +3,46 @@
 <PageTitle>UserList</PageTitle>
 @using Project.BlazorApp.Data;
 @using OA.Data;
-@inject HelperService Helper
+@using OA.Service;
+
+@inject IUserService UserService
 
 <h1>Registered users list</h1>
 
 <p>This component fetches registered users list</p>
 
+@if (userslist == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Login</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usr in userslist)
+            {
+                <tr>
+                    <td>@usr.Name</td>
+                    <td>@usr.Surname</td>
+                    <td>@usr.Login</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
     private IEnumerable<User>? userslist;
 
     protected override async Task OnInitializedAsync()
     {
-        userslist = await Helper.GetUsersAsync();
+        userslist = await UserService.GetUsersAsync();
     }
 }
